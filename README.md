@@ -40,9 +40,9 @@ Add the details below:
 - URL: *https://proxy.berkeley.minaexplorer.com/graphql*
 - Fee: *0.1*
 
-3. Get Testnet Tokens(tMINA) by following the link on the terminal. It takes a few min.
+3. Get Testnet Tokens(tMINA) by following the link on the pervious terminal. It takes a few min.
 
-Testnet tokens are required to pay for the transaction to deploy the smart contract to the blockchain.
+ *Testnet tokens are required to pay for the transaction to deploy the smart contract to the blockchain.*
 
 4. Deploy the app to the Mina Berkeley Testnet. Make sure you have your tMina in your account.
 
