@@ -1,4 +1,4 @@
-# Zk Tutorial for building on Mina Protocol
+# Getting started building on Mina Protocol
 
 A simple overview of creating & deploying a zkApp on Mina Protocol.
 
