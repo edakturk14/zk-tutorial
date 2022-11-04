@@ -31,8 +31,51 @@ A simple overview of creating & deploying a zkApp on Mina Protocol.
     └── tsconfig.json
     ```
 
-    Let's look into the src folder that contains the smart contracts for the zkApp.
+    Let's look into the src folder that contains the smart contracts for the zkApp. In the src folder there are the files: Add.ts and Add.test.ts. They are the zk-smart contract and the test file.
+    I have added the code and some comments to explain whats going on:
 
+    ```
+    import {
+      Field, // Field is used to describe unsigned integers 
+      SmartContract, // class for zk app smart contracts
+      state,
+      State,
+      method,
+      DeployArgs,
+      Permissions,
+    } from 'snarkyjs';
+
+    /**
+     * The Add contract initializes the state variable 'num' to be a Field(1) when deployed.
+     * The Add contract adds Field(2) to 'num' when the update() func is called. 
+     **/
+
+    export class Add extends SmartContract {
+
+      @state(Field) num = State<Field>(); // creates an on-chain state called num
+
+      deploy(args: DeployArgs) { // deploy method, describes the settings 
+        super.deploy(args);
+        this.setPermissions({
+          ...Permissions.default(),
+          editState: Permissions.proofOrSignature(),
+        });
+      }
+
+      @method init() { // initialize the num value to Field(1) on deployment
+        this.num.set(Field(1));
+      }
+
+      @method update() { // function to update the on-chain state of num variable 
+        const currentState = this.num.get(); // get the on-chain state 
+        this.num.assertEquals(currentState); // check this.num.get() is equal to the actual on-chain state
+        const newState = currentState.add(2); // add 2 
+        newState.assertEquals(currentState.add(2)); 
+        this.num.set(newState); // set the new on-chain state 
+      }
+    }
+    ```
+    
 2. We need to add the project configurations, run the command below to get the configuration wizard.
 
     ```
