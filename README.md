@@ -11,7 +11,7 @@ A simple overview of creating & deploying a zkApp on Mina Protocol.
 
 ## Installation
 
-1. First make sure that you have a [NodeJS](https://nodejs.org/en/) version 16 or above.
+1. First, make sure you have a [NodeJS](https://nodejs.org/en/) version 16 or above.
     You can check the Node version by:
     ```node -v``` or ```node --version```
 
@@ -23,10 +23,13 @@ A simple overview of creating & deploying a zkApp on Mina Protocol.
 
 3. *Optional* Setup a Mina wallet
 
-    *This section is not required for the tutorial however I am adding it here because its important to have the tools to be able to interact with the blockchain, and thats where we need a crypto wallet.*
+    *This section is not required for the tutorial however I am adding it here because it's important to have the tools to interact with the blockchain, and that's where we need a crypto wallet.*
 
-    I’ve setup [Auro](https://www.aurowallet.com/) thats a wallet for Mina Protocol. Its comes as a browser extension and mobile app.
-    After you add the extension to your browser you can follow the steps to create an account. It will generate a mnemonic phrase and make to safely store this phrase. Once your account is created, you’ll see the account the information on the UI.
+    I've set up [Auro](https://www.aurowallet.com/), thats a wallet for Mina Protocol. It comes as a browser extension and mobile app.
+
+    After you add the extension to your browser, you can follow the steps to create an account. It will generate a mnemonic phrase and make sure to store this phrase safely. Once your account is created, you'll see the account information on the UI.
+
+    ![auro-wallet-ss](https://github.com/edakturk14/zk-tutorial/blob/8a900421666274013d6aac194b5a1b66339e9074/IMAGES/mina-wallet.png)
 
 ## Create & Deploy a zkApp on Mina Protocol
 
@@ -38,7 +41,7 @@ A simple overview of creating & deploying a zkApp on Mina Protocol.
 
     ![create-zk-app](https://github.com/edakturk14/zk-tutorial/blob/13dbd5cc5df91324e39461f1745f5b15c593add5/IMAGES/create-zk-app.png)
 
-    Here's how the project folder looks like:
+    Here's what the project folder looks like:
 
     ```
     .
@@ -57,8 +60,9 @@ A simple overview of creating & deploying a zkApp on Mina Protocol.
     └── tsconfig.json
     ```
 
-    Let's look into the src folder that contains the smart contracts for the zkApp. In the src folder there are the files: Add.ts and Add.test.ts. They are the zk-smart contract and the test file.
-    I have added the code and some comments to explain whats going on:
+    Let's look into the src folder that contains the smart contracts for the zkApp. In the src folder, there are the files: Add.ts and Add.test.ts. They are the zk-smart contract and the test file.
+
+    I have added the code and some comments to explain what's going on:
 
     ```
     import {
