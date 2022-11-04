@@ -10,7 +10,7 @@ A simple overview of creating & deploying a zkApp on Mina Protocol.
     zk project zk-app
     ```
 
-    ![create-zk-app](IMAGES/create-zk-app.png)
+    ![create-zk-app](https://github.com/edakturk14/zk-tutorial/blob/13dbd5cc5df91324e39461f1745f5b15c593add5/IMAGES/create-zk-app.png)
 
     Here's how the project folder looks like:
 
@@ -44,11 +44,11 @@ A simple overview of creating & deploying a zkApp on Mina Protocol.
     - URL: *https://proxy.berkeley.minaexplorer.com/graphql*
     - Fee: *0.1*
 
-    ![zk-config](IMAGES/zk-config.png)
+    ![zk-config](https://github.com/edakturk14/zk-tutorial/blob/13dbd5cc5df91324e39461f1745f5b15c593add5/IMAGES/zk-config.png)
 
 3. Get Testnet Tokens(tMINA) by following the link on the pervious terminal. It takes a few min.
 
-    ![testnet-tokens](IMAGES/testnet-tokens.png)
+    ![testnet-tokens](https://github.com/edakturk14/zk-tutorial/blob/13dbd5cc5df91324e39461f1745f5b15c593add5/IMAGES/testnet-tokens.png)
 
     *Testnet tokens are required to pay for the transaction to deploy the smart contract to the blockchain.*
 
@@ -57,6 +57,6 @@ A simple overview of creating & deploying a zkApp on Mina Protocol.
     ```
     zk deploy berkeley
     ```
-    ![deploy-app](IMAGES/deploy-app.png)
+    ![deploy-app](https://github.com/edakturk14/zk-tutorial/blob/13dbd5cc5df91324e39461f1745f5b15c593add5/IMAGES/deploy-app.png)
 
 🎉 There you go! You've deployed your smart contracts onto the Mina Blockchain testnet.
