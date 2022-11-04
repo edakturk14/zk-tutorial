@@ -2,6 +2,32 @@
 
 A simple overview of creating & deploying a zkApp on Mina Protocol.
 
+## Tools
+
+- NodeJS 16+
+- [zkapp-cli](https://www.npmjs.com/package/zkapp-cli): package for creating zkApps using [SnarkyJS](https://docs.minaprotocol.com/zkapps/snarkyjs-reference) which is the Typescript Framework for writing zkApps on Mina Protocol
+- Berkeley Testnet Alpha: where the app will be deployed to
+- [Mina Block Explorer for Berkeley](https://berkeley.minaexplorer.com/)
+
+## Installation
+
+1. First make sure that you have a [NodeJS](https://nodejs.org/en/) version 16 or above.
+    You can check the Node version by:
+    ```node -v``` or ```node --version```
+
+2. Install the zkApp package manager
+    ```npm install -g zkapp-cli```
+
+    You can check that you’ve installed by running:
+    ```zk —version```
+
+3. *Optional* Setup a Mina wallet
+
+    *This section is not required for the tutorial however I am adding it here because its important to have the tools to be able to interact with the blockchain, and thats where we need a crypto wallet.*
+
+    I’ve setup [Auro](https://www.aurowallet.com/) thats a wallet for Mina Protocol. Its comes as a browser extension and mobile app.
+    After you add the extension to your browser you can follow the steps to create an account. It will generate a mnemonic phrase and make to safely store this phrase. Once your account is created, you’ll see the account the information on the UI.
+
 ## Create & Deploy a zkApp on Mina Protocol
 
 1. Create a new project folder
