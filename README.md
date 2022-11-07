@@ -136,17 +136,18 @@ A simple overview of creating & deploying a zkApp on Mina Protocol.
 
 ### Testing
 
-Jest Framework is included in the Mina zkApp CLI.
-- The test file for our sample smart contract is: Add.test.ts
+The JavaScript Testing Framework, [Jest](https://jestjs.io/) is included in the Mina zkApp CLI.
+
+- You can find the test file for the starter project in: Add.test.ts
 - Run tests with: ```npm run test``` or ```npm run testw``` (for watch mode)
-- You can run npm run coverage to generate a coverage report which shows which % of your code is covered with test
+- Run ```npm run coverage``` to generate a coverage report which shows which % of your code is covered with test. Here's how the [coverage folder](https://github.com/edakturk14/zk-tutorial/tree/main/zk-app/coverage) is for our sample project.
 - You can run your tests locally [here's](https://docs.minaprotocol.com/zkapps/how-to-test-a-zkapp#creating-a-local-blockchain) more details on creating a local blockchain
 
-* Please note: Jest just comes with the project, and you can use another test framework if you'd like to.
+*Please note: Jest just comes with the project, and you can use another test framework if you'd like to.*
 
 ### Use your Smart Contract in the UI
 
-Zkapps run on the client side; only the proof of the calculation is then sent to the blockchain. This means that it's just like a JS package you import to your front-end. Then you could create a transaction for your smart contract with snarkyjs, and to send that tx to the mina graphql endpoint.
+Zkapps run on the client side; only the proof of the calculation is then sent to the blockchain. This means that it's just like a JS package you import to your front-end. Then you could create a transaction for your smart contract with snarkyjs, and to send that transaction to the Mina GraphQL endpoint.
 
+- Here' an [example](https://github.com/es92/zkApp-examples/blob/main/03-deploying-to-a-live-network/src/main.ts) to show how to connect to Berkeley through a GraphQL proxy and craft a transacrion.
 - To use your zk-app on production, you need to publish your file to npm. Once you create an npm package, you can import it to your front-end. You can find the steps [here](https://docs.minaprotocol.com/zkapps/how-to-write-a-zkapp-ui#publish-to-npm-for-production).
-- Here' an [example](https://github.com/es92/zkApp-examples/blob/main/03-deploying-to-a-live-network/src/main.ts) to show how to connect to Berkeley through a GraphQL proxy and craft a tx
