@@ -60,13 +60,13 @@ A simple overview of creating & deploying a zkApp on Mina Protocol.
     └── tsconfig.json
     ```
 
-    Let's look into the src folder that contains the smart contracts for the zkApp. In the src folder, there are the files: Add.ts and Add.test.ts. They are the zk-smart contract and the test file.
+    The src folder that contains the smart contracts for the zkApp. You'll see: Add.ts and Add.test.ts. These are the zk-smart contract and the test file.
 
     I have added the code and some comments to explain what's going on:
 
     ```
     import {
-      Field, // Field is used to describe unsigned integers 
+      Field, // Field is used to describe unsigned integers
       SmartContract, // class for zk app smart contracts
       state,
       State,
@@ -77,14 +77,14 @@ A simple overview of creating & deploying a zkApp on Mina Protocol.
 
     /**
      * The Add contract initializes the state variable 'num' to be a Field(1) when deployed.
-     * The Add contract adds Field(2) to 'num' when the update() func is called. 
+     * The Add contract adds Field(2) to 'num' when the update() func is called.
      **/
 
     export class Add extends SmartContract {
 
       @state(Field) num = State<Field>(); // creates an on-chain state called num
 
-      deploy(args: DeployArgs) { // deploy method, describes the settings 
+      deploy(args: DeployArgs) { // deploy method, describes the settings
         super.deploy(args);
         this.setPermissions({
           ...Permissions.default(),
@@ -96,16 +96,16 @@ A simple overview of creating & deploying a zkApp on Mina Protocol.
         this.num.set(Field(1));
       }
 
-      @method update() { // function to update the on-chain state of num variable 
-        const currentState = this.num.get(); // get the on-chain state 
+      @method update() { // function to update the on-chain state of num variable
+        const currentState = this.num.get(); // get the on-chain state
         this.num.assertEquals(currentState); // check this.num.get() is equal to the actual on-chain state
-        const newState = currentState.add(2); // add 2 
-        newState.assertEquals(currentState.add(2)); 
-        this.num.set(newState); // set the new on-chain state 
+        const newState = currentState.add(2); // add 2
+        newState.assertEquals(currentState.add(2));
+        this.num.set(newState); // set the new on-chain state
       }
     }
     ```
-    
+
 2. We need to add the project configurations, run the command below to get the configuration wizard.
 
     ```
@@ -132,4 +132,21 @@ A simple overview of creating & deploying a zkApp on Mina Protocol.
     ```
     ![deploy-app](https://github.com/edakturk14/zk-tutorial/blob/13dbd5cc5df91324e39461f1745f5b15c593add5/IMAGES/deploy-app.png)
 
-🎉 There you go! You've deployed your smart contracts onto the Mina Blockchain testnet.
+    🎉 Wohoo! You've deployed your smart contracts onto the Mina Berkeley Testnet.
+
+### Testing
+
+Jest Framework is included in the Mina zkApp CLI.
+- The test file for our sample smart contract is: Add.test.ts
+- Run tests with: ```npm run test``` or ```npm run testw``` (for watch mode)
+- You can run npm run coverage to generate a coverage report which shows which % of your code is covered with test
+- You can run your tests locally [here's](https://docs.minaprotocol.com/zkapps/how-to-test-a-zkapp#creating-a-local-blockchain) more details on creating a local blockchain
+
+* Please note: Jest just comes with the project, and you can use another test framework if you'd like to.
+
+### Use your Smart Contract in the UI
+
+Zkapps run on the client side; only the proof of the calculation is then sent to the blockchain. This means that it's just like a JS package you import to your front-end. Then you could create a transaction for your smart contract with snarkyjs, and to send that tx to the mina graphql endpoint.
+
+- To use your zk-app on production, you need to publish your file to npm. Once you create an npm package, you can import it to your front-end. You can find the steps [here](https://docs.minaprotocol.com/zkapps/how-to-write-a-zkapp-ui#publish-to-npm-for-production).
+- Here' an [example](https://github.com/es92/zkApp-examples/blob/main/03-deploying-to-a-live-network/src/main.ts) to show how to connect to Berkeley through a GraphQL proxy and craft a tx
