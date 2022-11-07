@@ -1,12 +1,14 @@
 # Getting started building on Mina Protocol
 
-A simple overview of creating & deploying a zkApp on Mina Protocol.
+This section is an overview of creating & deploying a starter zkApp on Mina Protocol.
+
+*I'd highly recommend checking out [Mina Docs](https://docs.minaprotocol.com/zkapps) for deeper dive and more examples. Also here's a great presentation from [Jack](https://twitter.com/jackservia) on building [Mina zkApps](https://www.youtube.com/watch?v=kqjPwPV7qMA&ab_channel=ETHGlobal).*
 
 ## Tools
 
 - NodeJS 16+
-- [zkapp-cli](https://www.npmjs.com/package/zkapp-cli): package for creating zkApps using [SnarkyJS](https://docs.minaprotocol.com/zkapps/snarkyjs-reference) which is the Typescript Framework for writing zkApps on Mina Protocol
-- Berkeley Testnet Alpha: where the app will be deployed to
+- [Mina zkApp CLI](https://www.npmjs.com/package/zkapp-cli): package for creating zkApps using [SnarkyJS](https://docs.minaprotocol.com/zkapps/snarkyjs-reference) which is the Typescript Framework for writing zkApps on Mina Protocol. Test framework, formatting, git and other tools are also included in the NPM package
+- Berkeley Testnet: where the app will be deployed to (at the time of writing this post, zkApps are not yet available on Mina Mainnet)
 - [Mina Block Explorer for Berkeley](https://berkeley.minaexplorer.com/)
 
 ## Installation
@@ -29,8 +31,6 @@ A simple overview of creating & deploying a zkApp on Mina Protocol.
 
     After you add the extension to your browser, you can follow the steps to create an account. It will generate a mnemonic phrase and make sure to store this phrase safely. Once your account is created, you'll see the account information on the UI.
 
-    ![auro-wallet-ss](https://github.com/edakturk14/zk-tutorial/blob/8a900421666274013d6aac194b5a1b66339e9074/IMAGES/mina-wallet.png)
-
 ## Create & Deploy a zkApp on Mina Protocol
 
 1. Create a new project folder
@@ -38,8 +38,6 @@ A simple overview of creating & deploying a zkApp on Mina Protocol.
     ```
     zk project zk-app
     ```
-
-    ![create-zk-app](https://github.com/edakturk14/zk-tutorial/blob/13dbd5cc5df91324e39461f1745f5b15c593add5/IMAGES/create-zk-app.png)
 
     Here's what the project folder looks like:
 
@@ -84,27 +82,32 @@ A simple overview of creating & deploying a zkApp on Mina Protocol.
 
       @state(Field) num = State<Field>(); // creates an on-chain state called num
 
-      deploy(args: DeployArgs) { // deploy method, describes the settings
+      deploy(args: DeployArgs) { // deploy method, describes the settings and permissions
         super.deploy(args);
         this.setPermissions({
           ...Permissions.default(),
           editState: Permissions.proofOrSignature(),
+          // Proof authorization: allows end users to change the zkApp account state
+          // Signature authorization: allows the deployer account
         });
-      }
+      },
 
+      // @method decorator means that the func can be revoked by end-users
       @method init() { // initialize the num value to Field(1) on deployment
         this.num.set(Field(1));
       }
 
-      @method update() { // function to update the on-chain state of num variable
+      @method update() { // function to update the on-chain state of num variable(state)
         const currentState = this.num.get(); // get the on-chain state
         this.num.assertEquals(currentState); // check this.num.get() is equal to the actual on-chain state
         const newState = currentState.add(2); // add 2
-        newState.assertEquals(currentState.add(2));
+        newState.assertEquals(currentState.add(2)); // the assertion must be true to create the zk-proof
         this.num.set(newState); // set the new on-chain state
       }
     }
     ```
+
+    An important recap on how the app works is that the execution is done on the client side (browser). You can have public variables on the contract, in this example ```num``` is a on-chain value. In another case, you can pass private data into the contract, which is turned into a zk-prood on the browser and isn't seen by the network.
 
 2. We need to add the project configurations, run the command below to get the configuration wizard.
 
@@ -113,26 +116,115 @@ A simple overview of creating & deploying a zkApp on Mina Protocol.
     ```
     Add the details below:
 
-    - Name: *berkeley*
+    - Name: *berkeley-app*
     - URL: *https://proxy.berkeley.minaexplorer.com/graphql*
     - Fee: *0.1*
 
-    ![zk-config](https://github.com/edakturk14/zk-tutorial/blob/13dbd5cc5df91324e39461f1745f5b15c593add5/IMAGES/zk-config.png)
-
 3. Get Testnet Tokens(tMINA) by following the link on the pervious terminal. It takes a few min.
-
-    ![testnet-tokens](https://github.com/edakturk14/zk-tutorial/blob/13dbd5cc5df91324e39461f1745f5b15c593add5/IMAGES/testnet-tokens.png)
 
     *Testnet tokens are required to pay for the transaction to deploy the smart contract to the blockchain.*
 
 4. Deploy the app to the Mina Berkeley Testnet. Make sure you have your tMina in your account.
 
     ```
-    zk deploy berkeley
+    zk deploy berkeley-app
     ```
-    ![deploy-app](https://github.com/edakturk14/zk-tutorial/blob/13dbd5cc5df91324e39461f1745f5b15c593add5/IMAGES/deploy-app.png)
 
-    🎉 Wohoo! You've deployed your smart contracts onto the Mina Berkeley Testnet.
+ 🎉 Wohoo! You've deployed your smart contracts onto the Mina Berkeley Testnet.
+
+5. Lets create a small sript to interact with our contract locally. I've created ```src/main.ts``` and added code below. I've added comments to explain whats going on.
+
+    ```
+    import { Add } from './Add.js';
+    import {
+      isReady,
+      shutdown,
+      Mina,
+      PrivateKey,
+      AccountUpdate,
+    } from 'snarkyjs';
+
+    (async function main() {
+      await isReady;
+      console.log("Starting");
+
+      // start a local blockchain
+      const Local = Mina.LocalBlockchain();
+      Mina.setActiveInstance(Local);
+      const deployerAccount = Local.testAccounts[0].privateKey;
+
+      // create a destination to deploy the smart contract
+      const zkAppPrivateKey = PrivateKey.random();
+      const zkAppAddress = zkAppPrivateKey.toPublicKey();
+
+      // create an instance of Add - and deploy it to zkAppAddress
+      const zkAppInstance = new Add(zkAppAddress);
+      const deploy_txn = await Mina.transaction(deployerAccount, () => {
+        AccountUpdate.fundNewAccount(deployerAccount);
+        zkAppInstance.deploy({ zkappKey: zkAppPrivateKey });
+        zkAppInstance.init();
+        zkAppInstance.sign(zkAppPrivateKey);
+      });
+      await deploy_txn.send().wait();
+
+      // get the initial state of Add after deployment
+      const num0 = zkAppInstance.num.get();
+      console.log('Num after init:', num0.toString());
+
+      // ----------------------------------------------------
+
+      const txn1 = await Mina.transaction(deployerAccount, () => {
+        zkAppInstance.update();
+        zkAppInstance.sign(zkAppPrivateKey);
+      });
+      await txn1.send().wait();
+
+      const num1 = zkAppInstance.num.get();
+      console.log('Add 2:', num1.toString());
+
+      // ----------------------------------------------------
+
+      try {
+        const txn2 = await Mina.transaction(deployerAccount, () => {
+          zkAppInstance.update();
+          zkAppInstance.sign(zkAppPrivateKey);
+        });
+        await txn2.send().wait();
+      } catch (ex: any) {
+        console.log(ex.message);
+      }
+      const num2 = zkAppInstance.num.get();
+      console.log('Add 2:', num2.toString());
+
+      // ----------------------------------------------------
+
+      const txn3 = await Mina.transaction(deployerAccount, () => {
+        zkAppInstance.update();
+        zkAppInstance.sign(zkAppPrivateKey);
+      });
+      await txn3.send().wait();
+
+      const num3 = zkAppInstance.num.get();
+      console.log('Add 2:', num3.toString());
+
+      // ----------------------------------------------------
+
+      console.log('Closing the local blockchain');
+      await shutdown();
+
+    })();
+
+    ```
+
+6. Run the commands below to compile and run the zkapp:
+    ```
+    npm run build
+    node build/src/main.js
+    ```
+
+    If all goes well, you should be able to see the results on the terminal.
+
+    *To use your zk-app on production, you need to publish your file to npm. Once you create an npm package, you can import it to your front-end. You can find the steps [here](https://docs.minaprotocol.com/zkapps/how-to-write-a-zkapp-ui#publish-to-npm-for-production).*
 
 ### Testing
 
@@ -144,10 +236,3 @@ The JavaScript Testing Framework, [Jest](https://jestjs.io/) is included in the 
 - You can run your tests locally [here's](https://docs.minaprotocol.com/zkapps/how-to-test-a-zkapp#creating-a-local-blockchain) more details on creating a local blockchain
 
 *Please note: Jest just comes with the project, and you can use another test framework if you'd like to.*
-
-### Use your Smart Contract in the UI
-
-Zkapps run on the client side; only the proof of the calculation is then sent to the blockchain. This means that it's just like a JS package you import to your front-end. Then you could create a transaction for your smart contract with snarkyjs, and to send that transaction to the Mina GraphQL endpoint.
-
-- Here' an [example](https://github.com/es92/zkApp-examples/blob/main/03-deploying-to-a-live-network/src/main.ts) to show how to connect to Berkeley through a GraphQL proxy and craft a transacrion.
-- To use your zk-app on production, you need to publish your file to npm. Once you create an npm package, you can import it to your front-end. You can find the steps [here](https://docs.minaprotocol.com/zkapps/how-to-write-a-zkapp-ui#publish-to-npm-for-production).
