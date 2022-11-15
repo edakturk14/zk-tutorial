@@ -2,7 +2,7 @@
 
 ![Intro to Zero-knowledge & building zkApps w/Mina Protocol.js](header.png)
 
-This is the repo to go along with the blog post [Intro to Zero-knowledge & building zkApps w/Mina Protocol]
+This is the repo to go along with the blog post [Intro to Zero-knowledge & building zkApps w/Mina Protocol](https://eda.hashnode.dev/zero-knowledge-building-zkapps-mina-protocol)
 
 ---
 
