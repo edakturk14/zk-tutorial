@@ -1,17 +1,25 @@
 # Getting started building on Mina Protocol
 
-This section is an overview of creating & deploying a starter zkApp on Mina Protocol.
+![Intro to Zero-knowledge & building zkApps w/Mina Protocol.js](header.png)
 
-*I'd highly recommend checking out [Mina Docs](https://docs.minaprotocol.com/zkapps) for deeper dive and more examples. Also here's a great presentation from [Jack](https://twitter.com/jackservia) on building [Mina zkApps](https://www.youtube.com/watch?v=kqjPwPV7qMA&ab_channel=ETHGlobal).*
+This is the repo to go along with tbe blog post [Intro to Zero-knowledge & building zkApps w/Mina Protocol]
 
-## Tools
+---
+
+## Getting started
+
+This is an example of how to create & deploy a zkApp with Mina zkApp CLI to the Mina Testnet.
+
+*I'd highly recommend checking out [Mina Docs](https://docs.minaprotocol.com/zkapps) for deeper dive and more examples. Also, here's a great presentation from [Jack](https://twitter.com/jackservia) on building [Mina zkApps](https://www.youtube.com/watch?v=kqjPwPV7qMA&ab_channel=ETHGlobal).*
+
+### Tools
 
 - NodeJS 16+
 - [Mina zkApp CLI](https://www.npmjs.com/package/zkapp-cli): package for creating zkApps using [SnarkyJS](https://docs.minaprotocol.com/zkapps/snarkyjs-reference) which is the Typescript Framework for writing zkApps on Mina Protocol. Test framework, formatting, git and other tools are also included in the NPM package
 - Berkeley Testnet: where the app will be deployed to (at the time of writing this post, zkApps are not yet available on Mina Mainnet)
 - [Mina Block Explorer for Berkeley](https://berkeley.minaexplorer.com/)
 
-## Installation
+### Installation
 
 1. First, make sure you have a [NodeJS](https://nodejs.org/en/) version 16 or above.
     You can check the Node version by:
@@ -31,7 +39,7 @@ This section is an overview of creating & deploying a starter zkApp on Mina Prot
 
     After you add the extension to your browser, you can follow the steps to create an account. It will generate a mnemonic phrase and make sure to store this phrase safely. Once your account is created, you'll see the account information on the UI.
 
-## Create & Deploy a zkApp on Mina Protocol
+### Create & Deploy a zkApp on Mina Protocol
 
 1. Create a new project folder
 
@@ -226,7 +234,7 @@ This section is an overview of creating & deploying a starter zkApp on Mina Prot
 
     *To use your zk-app on production, you need to publish your file to npm. Once you create an npm package, you can import it to your front-end. You can find the steps [here](https://docs.minaprotocol.com/zkapps/how-to-write-a-zkapp-ui#publish-to-npm-for-production).*
 
-### Testing
+#### Testing
 
 The JavaScript Testing Framework, [Jest](https://jestjs.io/) is included in the Mina zkApp CLI.
 
